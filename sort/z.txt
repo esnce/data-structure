@@ -1,0 +1,259 @@
+
+1、排序的稳定性
+
+      假设 Ki=Kj(1<=i<=n,1<=j<=n,i!=j)，且在排序前的序列中 Ri 领先于 Rj （即 i<j）。如果排序后 Ri
+    仍领先于 Rj，则称所用的排序方法是稳定的；反之，若可能使得排序后的序列中 Rj 领先于 Ri，则称所用的排序
+    方法是不稳定的。
+
+
+2、内排序和外排序
+
+    内排序：在整个排序过程中，待排序的所有记录全部被放置在内存中。
+    外排序：由于排序的记录个数太多，不能同时放置在内存，整个排序过程需要在内外存之间多次交换数据才能进行。
+    
+    对内排序来说，排序算法的性能主要受3个方面的影响：
+        (a)时间性能，主要花在比较和移动
+        (b)辅助空间
+        (c)算法的复杂性
+
+    根据排序过程中借助的主要操作，内排序可分为：
+        (a)插入排序: 直接插入排序、希尔排序
+        (b)交换排序: 冒泡排序、快速排序
+        (c)选择排序: 简单选择排序、堆排序
+        (d)归并排序: 归并排序
+
+    
+3、冒泡排序
+
+    一种交换排序，基本思想是：两两比较相邻记录的关键字，如果反序则交换(较小值前移)，直到没有反序的记录为止。
+    时间复杂度：O(nxn)
+ 
+        int flag=TRUE;
+        for (i=0; i<len && flag; i++)
+        {
+            flag=FALSE;
+            for (j=len-2; j>=i; j--)
+            {
+                if (data[j] > data[j+1])
+                {
+                    swap(j, j+1);
+                    flag=TRUE;
+                }
+            }
+        }
+
+
+4、简单选择排序
+
+    简单选择排序就是通过 n-i 次关键字间的比较，从 n-i+1 个记录中选出关键字最小的记录，并和第 i(1<=i<=n) 个记录交换之。
+    时间复杂度：O(nxn)
+
+        for (i=0; i<len; i++)
+        {
+            min = i;
+            for (j=i+1; j<len; j++)
+            {
+                if (data[min] > data[j])
+                    min = j;
+            }
+            if (i != min)
+                swap(i, min);
+        }
+
+
+5、直接插入排序
+
+    直接插入排序的基本操作是将一个记录插入到已经排好序的有序表中，从而得到一个新的、记录数增 1 的有序表。
+    时间复杂度：O(nxn)
+
+        for (i=1; i<len; i++)
+        {
+            if (data[i] < data[i-1])
+            {
+                temp = data[i];                        //保存下来，因为该位置会在下面操作中被覆盖
+                for (j=i-1; j>=0 && data[j]>temp; j--) //在前 i 个元素组成的有序表中寻找合适的位置
+                    data[j+1] = data[j];               //将比 temp 大的值后移
+                data[j+1] = temp;
+            }
+        }
+
+
+6、希尔排序
+
+    将相距某个增量的记录(元素)组成一个子序列，在子序列内进行直接插入排序，逐渐得到基本有序的结果，这样最后一次的直接
+    插入排序将仅有少量数据需要交换。
+    局部有序：小的关键字基本在前面，大的基本在后面，不大不小的基本在中间，如: {2,1,3,6,4,7,5,8,9}
+    对直接插入排序的改进。
+    时间复杂度：希尔排序不是一个稳定的排序算法。时间复杂度稍微好于 O(nxn) 
+
+        len = LENGTH;
+        do
+        {
+            len = len/3 + 1;            //增量序列，相距此增量的元素组成子序列
+            for (i=len; i<LENGTH; i++)  //直接插入排序，逐步得到基本有序的结果
+            {
+                if (data[i] < data[i-len])
+                {
+                    temp = data[i];
+                    for (j=i-len; j>=0 && temp<data[j]; j-=len)
+                        data[j+len] = data[j];
+                    data[j+len] = temp;
+                }
+            }
+        }
+        while(len > 1);
+
+
+7、堆排序
+
+    堆是具有下列性质的完全二叉树：
+        每个结点的值都大于或等于其左右孩子结点的值(大顶堆)；
+        或者每个结点的值都小于或等于其左右孩子结点的值（小顶堆）
+    堆排序算法：
+        将待排序的序列构造成一个大顶堆(或小顶堆)；
+        将堆顶的最大(或最小)值与末尾元素交换；
+        将剩余的 n-1 个序列(元素)重新构成一个堆，并重复上面的步骤。
+    对简单选择排序进行的一种改进。
+    堆排序的时间复杂度: O(nlogn)。
+
+        #define MAXSIZE 10000
+        typedef struct
+        {
+            int r[MAXSIZE+1];  //用于存储要排序数组，r[0] 用作哨兵或临时变量
+            int length;        //用于记录顺序表的长度
+        } SqList;
+
+        void HeapSort(SqList *L)
+        {
+	    int i;
+	    for(i=L->length/2; i>0; i--)
+		 HeapAdjust(L, i, L->length); //构造堆
+
+	    for(i=L->length; i>1; i--)
+	    { 
+		 swap(L,1,i);                 //交换首尾元素
+		 HeapAdjust(L,1,i-1);         //重新构造堆
+	    }
+        }
+
+
+8、归并排序
+
+    假设初始序列含有 n 个记录，则可以看成是 n 个有序的子序列，每个子序列的长度为 1，然后两两归
+    并，得到 n/2 个长度为 2 或 1 的有序子序列；两两归并，...，如此重复，直至得到一个长度为 n
+    的有序序列为止，这种排序方法称为 2 路归并排序。
+    递归实现的归并算法的时间复杂度 O(nlogn)；空间复杂度O(n+logn)
+    非递归实现的归并算法的时间复杂度 O(nlogn)；空间复杂度O(n)
+
+
+9、快速排序
+
+    快速排序的基本思想：通过一趟排序将待排记录分割成独立的两部分，其中一部分记录的关键字均比另一记
+    录的关键字小，则可分别对这两部分记录继续进行排序，以达到整个序列有序的目的。
+    函数 Partition 做的就是选取其中一个关键字，然后设法将它放到一个位置，该位置左边的值都比它小，
+    该位置右边的值都比它大，并将该关键字称为枢轴(pivot)。
+    快速排序是对冒泡排序的升级。
+    快速排序是个不稳定的算法，最优时间复杂度 O(nlogn)。
+
+        //对顺序表L作快速排序
+        void QuickSort (SqList *L)
+        { 
+            QSort(L,1,L->length);
+        }
+
+        //对顺序表L中的子序列 L->r[low..high] 作快速排序
+        void QSort(SqList *L,int low,int high)
+        { 
+            int pivot;
+            if(low<high)
+            {
+                pivot=Partition(L,low,high);  //将L->r[low..high]一分为二，算出枢轴值 pivot
+                QSort(L,low,pivot-1);         //对低子表递归排序
+                QSort(L,pivot+1,high);        //对高子表递归排序
+            }
+        }
+
+        int Partition(SqList *L,int low,int high)
+        { 
+            int pivotkey;
+
+            pivotkey=L->r[low];    //用子表的第一个记录作枢轴记录
+            while(low<high)        //从表的两端交替地向中间扫描
+            { 
+                while(low<high&&L->r[high]>=pivotkey)
+                    high--;
+                swap(L,low,high);  //将比枢轴记录小的记录交换到低端
+                while(low<high&&L->r[low]<=pivotkey)
+                    low++;
+                swap(L,low,high);  //将比枢轴记录大的记录交换到高端
+            }
+            return low;            //返回枢轴所在位置
+        }
+
+
+        快速排序的优化：
+           (a)优化选取枢轴，防止有序记录带来的不稳定
+               三数取中：取三个关键字先进行排序，将中间数作为枢轴，一般是取左端、右端和中间三个数
+           (b)优化不必要的交换函数调用，使用中间变量
+           (c)优化小数组时的排序方案，设置一个阀值，小于其值的排序使用直接插入排序
+           (d)优化递归排序，
+
+               //快速排序优化算法
+               int Partition1(SqList *L, int low, int high)
+               {
+                   int pivotkey;
+
+                   int m = low + (high - low) / 2;
+                   if (L->r[low]>L->r[high])
+                       swap(L,low,high);     //保证左端较小
+                   if (L->r[m]>L->r[high])
+                       swap(L,high,m);       //保证中间较小
+                   if (L->r[m]>L->r[low])
+                       swap(L,m,low);        //保证左端较小
+	
+                   pivotkey=L->r[low];  //用子表的第一个记录作枢轴记录
+                   L->r[0]=pivotkey;    //将枢轴关键字备份到 L->r[0]
+                   while(low<high)      //从表的两端交替地向中间扫描
+                   {
+                       while(low<high&&L->r[high]>=pivotkey)
+                           high--;
+                       L->r[low]=L->r[high];
+                       while(low<high&&L->r[low]<=pivotkey)
+                           low++;
+                       L->r[high]=L->r[low];
+                   }
+                   L->r[low]=L->r[0];
+                   return low;  //返回枢轴所在位置
+                }
+
+                void QSort1(SqList *L,int low,int high)
+                { 
+                    int pivot;
+                    if((high-low)>MAX_LENGTH_INSERT_SORT)
+                    {
+                        while(low<high)  //改为 while
+                        {
+                            pivot=Partition1(L,low,high); //将L->r[low..high]一分为二，算出枢轴值 pivot
+                            QSort1(L,low,pivot-1);        //对低子表递归排序
+                            low=pivot+1;   //尾递归
+                        }
+                    }
+                    else
+                        InsertSort(L);
+                }
+
+                //对顺序表L作快速排序
+                void QuickSort1(SqList *L)
+                { 
+                    QSort1(L,1,L->length);
+                }
+
+
+10、算法选择
+
+    (a)待排序序列总是基本有序或待排序序列个数较少，则使用简单的算法
+    (b)希尔排序基本不被使用，若有需求则使用另外3个改进的算法：堆排序、归并排序、快速排序
+    (c)在改进的算法中，归并排序的稳定性最高，堆排序的辅助空间最少
+    (d)快速排序是最容易利用多核处理器的，配合多线程
+
+
