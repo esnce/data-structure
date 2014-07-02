@@ -12,14 +12,14 @@
 typedef int Status; 
 typedef int SElemType;
 
-/* ½Úµã½á¹¹ */
+/* ï¿½Úµï¿½ï¿½á¹¹ */
 typedef struct StackNode
 {
         SElemType data;
         struct StackNode *next;
 }StackNode, *LinkStackPtr;
 
-/* Á´±íÕ»½á¹¹ */
+/* ï¿½ï¿½ï¿½ï¿½Õ»ï¿½á¹¹ */
 typedef struct
 {
         LinkStackPtr top;
@@ -32,18 +32,18 @@ Status visit(SElemType c)
         return OK;
 }
 
-/*  ¹¹ÔìÒ»¸ö¿ÕÕ»S */
+/*  ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Õ»S */
 Status InitStack(LinkStack *S)
 { 
-        S->top = (LinkStackPtr)malloc(sizeof(StackNode));
-        if(!S->top)
-                return ERROR;
+//        S->top = (LinkStackPtr)malloc(sizeof(StackNode));
+//        if(!S->top)
+//                return ERROR;
         S->top=NULL;
         S->count=0;
         return OK;
 }
 
-/* °ÑSÖÃÎª¿ÕÕ» */
+/* ï¿½ï¿½Sï¿½ï¿½Îªï¿½ï¿½Õ» */
 Status ClearStack(LinkStack *S)
 { 
         LinkStackPtr p,q;
@@ -58,7 +58,7 @@ Status ClearStack(LinkStack *S)
         return OK;
 }
 
-/* ÈôÕ»SÎª¿ÕÕ»£¬Ôò·µ»ØTRUE£¬·ñÔò·µ»ØFALSE */
+/* ï¿½ï¿½Õ»SÎªï¿½ï¿½Õ»ï¿½ï¿½ï¿½ò·µ»ï¿½TRUEï¿½ï¿½ï¿½ï¿½ï¿½ò·µ»ï¿½FALSE */
 Status StackEmpty(LinkStack S)
 { 
         if (S.count==0)
@@ -67,13 +67,13 @@ Status StackEmpty(LinkStack S)
                 return FALSE;
 }
 
-/* ·µ»ØSµÄÔªËØ¸öÊý£¬¼´Õ»µÄ³¤¶È */
+/* ï¿½ï¿½ï¿½ï¿½Sï¿½ï¿½Ôªï¿½Ø¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ»ï¿½Ä³ï¿½ï¿½ï¿½ */
 int StackLength(LinkStack S)
 { 
         return S.count;
 }
 
-/* ÈôÕ»²»¿Õ£¬ÔòÓÃe·µ»ØSµÄÕ»¶¥ÔªËØ£¬²¢·µ»ØOK£»·ñÔò·µ»ØERROR */
+/* ï¿½ï¿½Õ»ï¿½ï¿½ï¿½Õ£ï¿½ï¿½ï¿½ï¿½ï¿½eï¿½ï¿½ï¿½ï¿½Sï¿½ï¿½Õ»ï¿½ï¿½Ôªï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½OKï¿½ï¿½ï¿½ï¿½ï¿½ò·µ»ï¿½ERROR */
 Status GetTop(LinkStack S,SElemType *e)
 {
         if (S.top==NULL)
@@ -83,27 +83,27 @@ Status GetTop(LinkStack S,SElemType *e)
         return OK;
 }
 
-/* ²åÈëÔªËØeÎªÐÂµÄÕ»¶¥ÔªËØ */
+/* ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½eÎªï¿½Âµï¿½Õ»ï¿½ï¿½Ôªï¿½ï¿½ */
 Status Push(LinkStack *S,SElemType e)
 {
         LinkStackPtr s=(LinkStackPtr)malloc(sizeof(StackNode)); 
         s->data=e; 
-        s->next=S->top;	/* °Ñµ±Ç°µÄÕ»¶¥ÔªËØ¸³Öµ¸øÐÂ½áµãµÄÖ±½Óºó¼Ì£¬¼ûÍ¼ÖÐ¢Ù */
-        S->top=s;         /* ½«ÐÂµÄ½áµãs¸³Öµ¸øÕ»¶¥Ö¸Õë£¬¼ûÍ¼ÖÐ¢Ú */
+        s->next=S->top;	/* ï¿½Ñµï¿½Ç°ï¿½ï¿½Õ»ï¿½ï¿½Ôªï¿½Ø¸ï¿½Öµï¿½ï¿½ï¿½Â½ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½Óºï¿½ï¿½Ì£ï¿½ï¿½ï¿½Í¼ï¿½Ð¢ï¿½ */
+        S->top=s;         /* ï¿½ï¿½ï¿½ÂµÄ½ï¿½ï¿½ï¿½sï¿½ï¿½Öµï¿½ï¿½Õ»ï¿½ï¿½Ö¸ï¿½ë£¬ï¿½ï¿½Í¼ï¿½Ð¢ï¿½ */
         S->count++;
         return OK;
 }
 
-/* ÈôÕ»²»¿Õ£¬ÔòÉ¾³ýSµÄÕ»¶¥ÔªËØ£¬ÓÃe·µ»ØÆäÖµ£¬²¢·µ»ØOK£»·ñÔò·µ»ØERROR */
+/* ï¿½ï¿½Õ»ï¿½ï¿½ï¿½Õ£ï¿½ï¿½ï¿½É¾ï¿½ï¿½Sï¿½ï¿½Õ»ï¿½ï¿½Ôªï¿½Ø£ï¿½ï¿½ï¿½eï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½OKï¿½ï¿½ï¿½ï¿½ï¿½ò·µ»ï¿½ERROR */
 Status Pop(LinkStack *S,SElemType *e)
 { 
         LinkStackPtr p;
         if(StackEmpty(*S))
                 return ERROR;
         *e=S->top->data;
-        p=S->top;		/* ½«Õ»¶¥½áµã¸³Öµ¸øp£¬¼ûÍ¼ÖÐ¢Û */
-        S->top=S->top->next;    /* Ê¹µÃÕ»¶¥Ö¸ÕëÏÂÒÆÒ»Î»£¬Ö¸ÏòºóÒ»½áµã£¬¼ûÍ¼ÖÐ¢Ü */
-        free(p);                /* ÊÍ·Å½áµãp */        
+        p=S->top;		/* ï¿½ï¿½Õ»ï¿½ï¿½ï¿½ï¿½ï¿½ã¸³Öµï¿½ï¿½pï¿½ï¿½ï¿½ï¿½Í¼ï¿½Ð¢ï¿½ */
+        S->top=S->top->next;    /* Ê¹ï¿½ï¿½Õ»ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»Î»ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ã£¬ï¿½ï¿½Í¼ï¿½Ð¢ï¿½ */
+        free(p);                /* ï¿½Í·Å½ï¿½ï¿½ï¿½p */        
         S->count--;
         return OK;
 }
@@ -129,14 +129,14 @@ int main()
         if(InitStack(&s)==OK)
                 for(j=1;j<=10;j++)
                         Push(&s,j);
-        printf("Õ»ÖÐÔªËØÒÀ´ÎÎª£º");
+        printf("Õ»ï¿½ï¿½Ôªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½");
         StackTraverse(s);
         Pop(&s,&e);
-        printf("µ¯³öµÄÕ»¶¥ÔªËØ e=%d\n",e);
-        printf("Õ»¿Õ·ñ£º%d(1:¿Õ 0:·ñ)\n",StackEmpty(s));
+        printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ»ï¿½ï¿½Ôªï¿½ï¿½ e=%d\n",e);
+        printf("Õ»ï¿½Õ·ï¿½ï¿½ï¿½%d(1:ï¿½ï¿½ 0:ï¿½ï¿½)\n",StackEmpty(s));
         GetTop(s,&e);
-        printf("Õ»¶¥ÔªËØ e=%d Õ»µÄ³¤¶ÈÎª%d\n",e,StackLength(s));
+        printf("Õ»ï¿½ï¿½Ôªï¿½ï¿½ e=%d Õ»ï¿½Ä³ï¿½ï¿½ï¿½Îª%d\n",e,StackLength(s));
         ClearStack(&s);
-        printf("Çå¿ÕÕ»ºó£¬Õ»¿Õ·ñ£º%d(1:¿Õ 0:·ñ)\n",StackEmpty(s));
+        printf("ï¿½ï¿½ï¿½ï¿½Õ»ï¿½ï¿½ï¿½ï¿½Õ»ï¿½Õ·ï¿½ï¿½ï¿½%d(1:ï¿½ï¿½ 0:ï¿½ï¿½)\n",StackEmpty(s));
         return 0;
 }
